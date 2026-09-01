@@ -1,17 +1,3 @@
-// ESP32 DevKit / ESP32-WROOM-32 ground-station actuator
-// Hardware mapping requested:
-//   MOSFET driver CH1 = GPIO 13
-//   MOSFET driver CH2 = GPIO 33  (ESP32 strapping pin; see project notes)
-//   MOSFET driver CH3 = GPIO 14
-//   MOSFET driver CH4 = GPIO 27
-//
-// W5500:
-//   MISO = GPIO 32
-//   RST  = GPIO 26
-//   MOSI = GPIO 23
-//   SCK  = GPIO 18
-//   CS   = GPIO 5
-
 #include <SPI.h>
 #include "w5500.h"
 
