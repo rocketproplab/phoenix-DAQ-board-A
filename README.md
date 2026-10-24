@@ -1,5 +1,7 @@
-# phoenix-fc-valve-board
-Phoenix Flight Computer: valve board (#2)
+# phoenix-fc-board-A
+Phoenix Flight Computer: middle board (#2)
+
+Current valves on this LNG - F, LNG - P, LOX - V
 
 ## Last updated
 08/31/2026
