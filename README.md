@@ -1,10 +1,8 @@
 # phoenix-fc-valve-board
 Phoenix Flight Computer: valve boards. One codebase builds both boards.
 
-- **Board A** (middle board, #2): LOX - P, LOX - F, LNG - V
-- **Board B** (bottom board, #3): LNG - P, LNG - F, LOX - V
-
-
+- **Board A** (middle board, #2): LNG - P, LOX - P, LNG - F, LOX -F
+- **Board B** (bottom board, #3): LNG - V, LOX - V
 
 ## Last updated
 11/14/2026

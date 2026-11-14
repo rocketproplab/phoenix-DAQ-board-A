@@ -26,16 +26,16 @@ struct Valve {
 const uint8_t *const BOARD_MAC = MAC_BOARD_A;
 const char *const BOARD_NAME = "A";
 Valve valves[] = {
-    {"LOX_PRES", LOX_PRES_MASK, DRIVER_CH1_PIN, false, 0},
-    {"LOX_FLOW", LOX_FLOW_MASK, DRIVER_CH2_PIN, false, 0},
-    {"LNG_VENT", LNG_VENT_MASK, DRIVER_CH3_PIN, false, 0},
+    {"LNG_PRES",  LNG_PRES_MASK, DRIVER_CH1_PIN, false, 0},
+    {"LOX_PRESS", LOX_PRESS_MASK, DRIVER_CH2_PIN, false, 0},
+    {"LNG_FLOW",  LNG_FLOW_MASK, DRIVER_CH3_PIN, false, 0},
+    {"LOX_FLOW",  LOX_FLOW_MASK, DRIVER_CH3_PIN, false, 0},
 };
 #else  // BOARD_B
 const uint8_t *const BOARD_MAC = MAC_BOARD_B;
 const char *const BOARD_NAME = "B";
 Valve valves[] = {
-    {"LNG_PRES", LNG_PRES_MASK, DRIVER_CH1_PIN, false, 0},
-    {"LNG_FLOW", LNG_FLOW_MASK, DRIVER_CH2_PIN, false, 0},
-    {"LOX_VENT", LOX_VENT_MASK, DRIVER_CH3_PIN, false, 0},
+    {"LNG_VENT", LNG_VENT_MASK, DRIVER_CH1_PIN, false, 0},
+    {"LOX_VENT", LOX_VENT_MASK, DRIVER_CH2_PIN, false, 0},
 };
 #endif
