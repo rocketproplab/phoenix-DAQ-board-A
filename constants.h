@@ -1,3 +1,5 @@
+// UNLESS YOU ARE IN SOFTWARE, DO NOT TOUCH THIS FILE
+
 // Timing for solenoids
 constexpr unsigned long OPEN_MILLIS = 500;
 constexpr uint8_t OPEN_PWM = 255;

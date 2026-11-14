@@ -1,3 +1,5 @@
+// UNLESS YOU ARE IN SOFTWARE, DO NOT TOUCH THIS FILE
+
 #include <SPI.h>
 #include "w5500.h"
 #include "constants.h"

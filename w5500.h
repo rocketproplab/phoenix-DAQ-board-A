@@ -1,3 +1,5 @@
+// NOBODY TOUCH THIS FILE. NOT EVEN SOFTWARE
+
 /*
  * Copyright (c) 2013, WIZnet Co., Ltd.
  * Copyright (c) 2016, Nicholas Humfrey

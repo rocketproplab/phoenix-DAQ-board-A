@@ -1,7 +1,8 @@
-/* Again, if you change the board pinouts change this file
-   Historically that wasn't communicated and you can imagine how
-   poorly that could go
-*/
+// AV is explicitly allowed to modify this file and required to do so when updating pinouts
+//
+// Again, if you change the board pinouts change this file
+// Historically that wasn't communicated and you can imagine how poorly that could go
+// So make sure to do it and double check with ESP wiring
 
 // W5500 pins
 constexpr uint8_t W5500_MISO = 32;

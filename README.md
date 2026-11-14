@@ -10,7 +10,7 @@ Phoenix Flight Computer: valve boards. One codebase builds both boards.
 ## ESP32 DevKit / ESP32-WROOM-32 — Ground-Station Actuator
 
 ### IMPORTANT NOTE:
-`pins.h` contains the pinouts for the MOSFET Driver and W5500. If you change the physical pinouts, you ***MUST*** change them in `pins.h` or else it won't be reflected in code.
+`pins.h` contains the pinouts for the MOSFET Driver and W5500. If you change the physical pinouts, you ***MUST*** change them in `pins.h` or else it won't be reflected in code. We have also specifically said in comments what parts of code AV is allowed to modify and is not allowed to modify.
 
 ### MOSFET Driver
 
