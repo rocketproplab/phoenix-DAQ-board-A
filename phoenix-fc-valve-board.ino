@@ -1,58 +1,9 @@
 #include <SPI.h>
 #include "w5500.h"
-#include "board_config.h"
+#include "constants.h"
 // Again, UPDATE pins.h IF YOU CHANGE PHYSICAL PINOUTS
 #include "pins.h"
-
-// Timing for solenoids
-constexpr unsigned long OPEN_MILLIS = 500;
-constexpr uint8_t OPEN_PWM = 255;
-constexpr uint8_t HOLD_PWM = 77;
-constexpr uint32_t PWM_FREQUENCY_HZ = 200;  // Conservative value for the linked MOSFET module
-
-// MAC addresses
-static const uint8_t MAC_GROUND_STATION[6] = {0x02, 0x47, 0x53,
-                                              0x00, 0x00, 0x01}; // GS: ground station
-static const uint8_t MAC_BOARD_B[6] = {0x02, 0x52, 0x56,
-                                       0x00, 0x00, 0x02}; // board B (bottom, formerly vent board)
-static const uint8_t MAC_BOARD_A[6] = {0x02, 0x46, 0x4C,
-                                       0x00, 0x00, 0x03}; // board A (middle, formerly flow valve board)
-static const uint8_t MAC_SENSOR_GIGA[6] = {0x02, 0x53, 0x49,
-                                           0x00, 0x00, 0x04}; // sensor
-
-static const uint8_t LNG_PRES_MASK = 0b1000000; // LNG Pressurant / Upstream
-static const uint8_t LOX_PRES_MASK = 0b0100000; // LOX Pressurant / Upstream
-static const uint8_t LNG_FLOW_MASK = 0b0001000; // LNG Flow / Downstream
-static const uint8_t LNG_VENT_MASK = 0b0000100; // LNG Vent
-static const uint8_t LOX_FLOW_MASK = 0b0000010; // Lox Flow / Downstream
-static const uint8_t LOX_VENT_MASK = 0b0000001; // LOX Vent
-
-struct Valve {
-  const char *name;
-  uint8_t mask;
-  uint8_t pin;
-  bool state;
-  unsigned long lastOpened;
-};
-
-// Per-board setup: this board's MAC and which valve is on which channel.
-#if defined(BOARD_A)
-const uint8_t *const BOARD_MAC = MAC_BOARD_A;
-const char *const BOARD_NAME = "A";
-Valve valves[] = {
-    {"LOX_PRES", LOX_PRES_MASK, DRIVER_CH1_PIN, false, 0},
-    {"LOX_FLOW", LOX_FLOW_MASK, DRIVER_CH2_PIN, false, 0},
-    {"LNG_VENT", LNG_VENT_MASK, DRIVER_CH3_PIN, false, 0},
-};
-#else  // BOARD_B
-const uint8_t *const BOARD_MAC = MAC_BOARD_B;
-const char *const BOARD_NAME = "B";
-Valve valves[] = {
-    {"LNG_PRES", LNG_PRES_MASK, DRIVER_CH1_PIN, false, 0},
-    {"LNG_FLOW", LNG_FLOW_MASK, DRIVER_CH2_PIN, false, 0},
-    {"LOX_VENT", LOX_VENT_MASK, DRIVER_CH3_PIN, false, 0},
-};
-#endif
+#include "board_config.h"
 
 constexpr size_t NUM_VALVES = sizeof(valves) / sizeof(valves[0]);
 
@@ -107,8 +58,10 @@ void setup() {
 
   Serial.print("ESP32 actuator initialized, board ");
   Serial.println(BOARD_NAME);
-  Serial.println("W5500: MISO=32 RST=26 MOSI=23 SCK=18 CS=5");
-  Serial.println("MOSFET inputs: CH1=13 CH2=12 CH3=14 CH4=27");
+  Serial.printf("W5500: MISO=%u RST=%u MOSI=%u SCK=%u CS=%u\n",
+                W5500_MISO, W5500_RST, W5500_MOSI, W5500_SCK, W5500_CS);
+  Serial.printf("MOSFET inputs: CH1=%u CH2=%u CH3=%u CH4=%u\n",
+                DRIVER_CH1_PIN, DRIVER_CH2_PIN, DRIVER_CH3_PIN, DRIVER_CH4_PIN);
 }
 
 void receiveRocketState() {

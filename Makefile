@@ -5,10 +5,14 @@ FQBN  ?= esp32:esp32:esp32
 SKETCH = phoenix-fc-valve-board
 STAGE  = build/$(SKETCH)
 
+SRCS   = $(wildcard *.ino *.h *.cpp)
+
 .PHONY: build flash stage clean
+
 stage:
+	@rm -rf $(STAGE)
 	@mkdir -p $(STAGE)
-	@cp $(SKETCH).ino board_config.h w5500.h w5500.cpp $(STAGE)/
+	@cp $(SRCS) $(STAGE)/
 
 build: stage
 	arduino-cli compile --fqbn $(FQBN) \

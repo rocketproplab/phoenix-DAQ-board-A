@@ -1,3 +1,8 @@
+/* Again, if you change the board pinouts change this file
+   Historically that wasn't communicated and you can imagine how
+   poorly that could go
+*/
+
 // W5500 pins
 constexpr uint8_t W5500_MISO = 32;
 constexpr uint8_t W5500_RST  = 26;
