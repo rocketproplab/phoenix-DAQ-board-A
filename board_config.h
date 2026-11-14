@@ -34,7 +34,7 @@ const char *const BOARD_NAME = "A";
 // If a valve gets moved, change them here
 Valve valves[] = {
     {"LNG_PRES",  LNG_PRES_MASK, DRIVER_CH1_PIN, false, 0},
-    {"LOX_PRESS", LOX_PRESS_MASK, DRIVER_CH2_PIN, false, 0},
+    {"LOX_PRESS", LOX_PRES_MASK, DRIVER_CH2_PIN, false, 0},
     {"LNG_FLOW",  LNG_FLOW_MASK, DRIVER_CH3_PIN, false, 0},
     {"LOX_FLOW",  LOX_FLOW_MASK, DRIVER_CH3_PIN, false, 0},
 };
