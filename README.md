@@ -1,10 +1,11 @@
-# phoenix-fc-board-A
-Phoenix Flight Computer: middle board (#2)
+# phoenix-fc-valve-board
+Phoenix Flight Computer: valve boards. One codebase builds both boards.
 
-Current valves on this LNG - F, LNG - P, LOX - F, LOX - P
+- **Board A** (middle board, #2): LOX - P, LOX - F, LNG - V
+- **Board B** (bottom board, #3): LNG - P, LNG - F, LOX - V
 
 ## Last updated
-10/31/2026
+11/14/2026
 
 ## ESP32 DevKit / ESP32-WROOM-32 — Ground-Station Actuator
 
@@ -26,3 +27,10 @@ Current valves on this LNG - F, LNG - P, LOX - F, LOX - P
 | MOSI | GPIO 23 |
 | SCK | GPIO 18 |
 | CS | GPIO 5 |
+
+## Board A / Board B builds
+One codebase serves both boards. The board select is `board_config.h`; each board's MAC and valve-to-channel list is the `#if defined(BOARD_A)` block in the `.ino`.
+
+- `make build BOARD=A` / `make build BOARD=B`
+- `make flash BOARD=B PORT=/dev/cu.usbserial-XXXX`
+- Arduino IDE: uncomment `#define BOARD_A` or `#define BOARD_B` in `board_config.h`.
