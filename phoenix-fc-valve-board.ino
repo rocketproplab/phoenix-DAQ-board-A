@@ -1,62 +1,11 @@
+// UNLESS YOU ARE IN SOFTWARE, DO NOT TOUCH THIS FILE
+
 #include <SPI.h>
 #include "w5500.h"
-
-// W5500 pins
-constexpr uint8_t W5500_MISO = 32;
-constexpr uint8_t W5500_RST  = 26;
-constexpr uint8_t W5500_MOSI = 23;
-constexpr uint8_t W5500_SCK  = 18;
-constexpr uint8_t W5500_CS   = 5;
-
-// Four MOSFET-driver inputs
-constexpr uint8_t DRIVER_CH1_PIN = 13;
-constexpr uint8_t DRIVER_CH2_PIN = 33;
-constexpr uint8_t DRIVER_CH3_PIN = 14;
-constexpr uint8_t DRIVER_CH4_PIN = 27;
-
-// Timing for solenoids
-constexpr unsigned long OPEN_MILLIS = 500;
-constexpr uint8_t OPEN_PWM = 255;
-constexpr uint8_t HOLD_PWM = 77;
-constexpr uint32_t PWM_FREQUENCY_HZ = 200;  // Conservative value for the linked MOSFET module
-
-// MAC addresses
-static const uint8_t MAC_GROUND_STATION[6] = {0x02, 0x47, 0x53,
-                                              0x00, 0x00, 0x01}; // GS: ground station
-static const uint8_t MAC_RELIEF_VALVE[6] = {0x02, 0x52, 0x56,
-                                            0x00, 0x00, 0x02}; // vent
-static const uint8_t MAC_FLOW_VALVE[6] = {0x02, 0x46, 0x4C,
-                                          0x00, 0x00, 0x03}; // valve
-static const uint8_t MAC_SENSOR_GIGA[6] = {0x02, 0x53, 0x49,
-                                           0x00, 0x00, 0x04}; // sensor
-
-static const uint8_t LNG_PRES_MASK = 0b1000000; // LNG Pressurant / Upstream
-static const uint8_t LOX_PRES_MASK = 0b0100000; // LOX Pressurant / Upstream
-// static const uint8_t GN2_VENT_MASK = 0b0010000; // GN2 Vent, currently removed
-static const uint8_t LNG_FLOW_MASK = 0b0001000; // LNG Flow / Downstream
-static const uint8_t LNG_VENT_MASK = 0b0000100; // LNG Vent
-static const uint8_t LOX_FLOW_MASK = 0b0000010; // Lox Flow / Downstream
-static const uint8_t LOX_VENT_MASK = 0b0000001; // LOX Vent
-
-// NOTE:
-// Your original sketch controlled seven outputs, but the pin list you supplied
-// contains four MOSFET signal GPIOs. This build maps channels 1-4 to the first
-// four logical outputs from the original sketch. Change only these four rows if
-// your physical channel-to-valve assignment is different.
-struct Valve {
-  const char *name;
-  uint8_t mask;
-  uint8_t pin;
-  bool state;
-  unsigned long lastOpened;
-};
-
-Valve valves[] = {
-    {"LNG_PRES",    LNG_PRES_MASK,   DRIVER_CH1_PIN, false, 0},
-    {"LOX_PRES",    LOX_PRES_MASK,   DRIVER_CH2_PIN, false, 0},
-    {"LNG_FLOW",    LNG_FLOW_MASK,   DRIVER_CH3_PIN, false, 0},
-    {"LOX_FLOW",    LOX_FLOW_MASK,   DRIVER_CH4_PIN, false, 0}
-};
+#include "constants.h"
+// Again, UPDATE pins.h IF YOU CHANGE PHYSICAL PINOUTS
+#include "pins.h"
+#include "board_config.h"
 
 constexpr size_t NUM_VALVES = sizeof(valves) / sizeof(valves[0]);
 
@@ -101,7 +50,7 @@ void setup() {
   digitalWrite(W5500_CS, HIGH);
   resetW5500();
 
-  ethernetReady = w5500.begin(MAC_FLOW_VALVE);
+  ethernetReady = w5500.begin(BOARD_MAC);
 
   if (!ethernetReady) {
     Serial.println("ERROR: W5500 failed to enter MACRAW mode. Outputs remain OFF.");
@@ -109,9 +58,12 @@ void setup() {
     return;
   }
 
-  Serial.println("ESP32 actuator initialized");
-  Serial.println("W5500: MISO=32 RST=26 MOSI=23 SCK=18 CS=5");
-  Serial.println("MOSFET inputs: CH1=13 CH2=12 CH3=14 CH4=27");
+  Serial.print("ESP32 actuator initialized, board ");
+  Serial.println(BOARD_NAME);
+  Serial.printf("W5500: MISO=%u RST=%u MOSI=%u SCK=%u CS=%u\n",
+                W5500_MISO, W5500_RST, W5500_MOSI, W5500_SCK, W5500_CS);
+  Serial.printf("MOSFET inputs: CH1=%u CH2=%u CH3=%u CH4=%u\n",
+                DRIVER_CH1_PIN, DRIVER_CH2_PIN, DRIVER_CH3_PIN, DRIVER_CH4_PIN);
 }
 
 void receiveRocketState() {
